@@ -1,13 +1,13 @@
 package app;
 
-import boardgame.Position;
+import boardgame.Board;
 
 public class ChessApp {
 
 	public static void main(String[] args) {
-		System.out.println("Hello World");
-		Position p = new Position(2, 3);
-		System.out.println(p);
+		Board board = new Board(10,8);
+		
+		System.out.println(board.getRows());
 
 	}
 
