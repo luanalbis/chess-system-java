@@ -8,7 +8,7 @@ public class Piece {
 	public Piece(Board board) {
 		this.position = null;
 		this.board = board;
-		this.name = '-';
+		this.name = '0';
 	}
 
 	protected Board getBoard() {
