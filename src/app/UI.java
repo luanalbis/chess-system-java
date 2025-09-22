@@ -18,7 +18,7 @@ public class UI {
 	}
 
 	private static void printPiece(ChessPiece piece) {
-		System.out.print(piece == null ? "-" : piece);
+		System.out.print(piece == null ? "-" : piece.getName());
 		System.out.print(" ");
 	}
 

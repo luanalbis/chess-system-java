@@ -23,6 +23,7 @@ public class Board {
 	public int getColumns() {
 		return columns;
 	}
+
 	public void setColumns(int columns) {
 		this.columns = columns;
 	}
@@ -33,5 +34,10 @@ public class Board {
 
 	public Piece piece(Position position) {
 		return this.pieces[position.getRow()][position.getColumn()];
+	}
+
+	public void placePiece(Piece piece, Position position) {
+		this.pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position;
 	}
 }
