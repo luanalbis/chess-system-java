@@ -27,7 +27,7 @@ public class ChessApp {
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(sc);
 				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
-				System.out.println(capturedPiece.getName());
+				
 			} catch (ChessException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();
