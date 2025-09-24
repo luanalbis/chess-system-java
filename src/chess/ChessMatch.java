@@ -28,19 +28,18 @@ public class ChessMatch {
 	public ChessPiece performChessMove(ChessPosition source, ChessPosition target) {
 		Position sourcePosition = source.toPosition();
 		Position targetPosition = target.toPosition();
-		
-		
+
 		validateSourcePosition(sourcePosition);
-		
-		Piece p  = board.removePieceOnBoard(sourcePosition);
+
+		Piece p = board.removePieceOnBoard(sourcePosition);
 		Piece captured = board.removePieceOnBoard(targetPosition);
 		board.placePieceOnBoard(p, targetPosition);
-		
+
 		return (ChessPiece) captured;
 	}
-	
-	private Piece makeMove(Position sourcePosition,Position targetPosition) {
-		Piece p  = board.removePieceOnBoard(sourcePosition);
+
+	private Piece makeMove(Position sourcePosition, Position targetPosition) {
+		Piece p = board.removePieceOnBoard(sourcePosition);
 		Piece captured = board.removePieceOnBoard(targetPosition);
 		board.placePieceOnBoard(p, targetPosition);
 		return captured;
