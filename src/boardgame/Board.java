@@ -38,9 +38,18 @@ public class Board {
 	public void placePieceOnBoard(Piece piece, Position position) {
 		if (thereIsAPiece(position))
 			throw new BoardException("There is already a piece on position");
-		
+
 		this.pieces[position.getRow()][position.getColumn()] = piece;
 		piece.position = position;
+	}
+
+	public Piece removePieceOnBoard(Position position) {
+		if (!this.positionExists(position))
+			throw new BoardException("Position not on the board");
+		
+		Piece removed = this.getPieceByPosition(position);
+		this.pieces[position.getRow()][position.getColumn()] = null;
+		return removed;
 	}
 
 	public boolean positionExists(int row, int column) {
@@ -57,4 +66,5 @@ public class Board {
 			throw new BoardException("Position not on the board");
 		return this.getPieceByPosition(position) != null;
 	}
+
 }
