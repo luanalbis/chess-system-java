@@ -3,12 +3,20 @@ package app;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 
 public class UI {
 
-	public static void printBoard(ChessPiece[][] pieces) {
+	public static void printMatch(ChessMatch chessMatch) {
+		printBoard(chessMatch.getPieces());
+		System.out.println();
+		System.out.println("Turn: " + chessMatch.getTurn());
+		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+	}
+
+	private static void printBoard(ChessPiece[][] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pieces.length; j++) {
@@ -16,9 +24,12 @@ public class UI {
 			}
 			System.out.println();
 		}
-
 		System.out.println("  a b c d e f g h");
+	}
 
+	private static void printPiece(ChessPiece piece) {
+		System.out.print(piece == null ? "-" : piece.getName());
+		System.out.print(" ");
 	}
 
 	public static ChessPosition readChessPosition(Scanner sc) {
@@ -32,11 +43,6 @@ public class UI {
 			throw new InputMismatchException("Error reading ChessPosition.Valid values are from a-1 to h-8");
 		}
 
-	}
-
-	private static void printPiece(ChessPiece piece) {
-		System.out.print(piece == null ? "-" : piece.getName());
-		System.out.print(" ");
 	}
 
 	public static void clearScreen() {
