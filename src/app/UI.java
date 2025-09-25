@@ -1,19 +1,22 @@
 package app;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import chess.Color;
 
 public class UI {
 
-	public static void printMatch(ChessMatch chessMatch) {
+	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captureds) {
 		printBoard(chessMatch.getPieces());
 		System.out.println();
 		System.out.println("Turn: " + chessMatch.getTurn());
 		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+		printCapturedPieces(captureds);
 	}
 
 	private static void printBoard(ChessPiece[][] pieces) {
@@ -44,6 +47,22 @@ public class UI {
 		}
 
 	}
+
+	private static void printCapturedPieces(List<ChessPiece> captureds) {
+		List<ChessPiece> whites = captureds.stream().filter(p -> p.getColor() == Color.WHITE).toList();
+		List<ChessPiece> blacks = captureds.stream().filter(p -> p.getColor() == Color.BLACK).toList();
+
+		System.out.println();
+		System.out.println("Captured Pieces:");
+		System.out.print("White: ");
+		whites.forEach(p -> System.out.print(p.getName() + " "));
+
+		System.out.println();
+
+		System.out.print("Black: ");
+		blacks.forEach(p -> System.out.print(p.getName()  + " "));
+		System.out.println();
+		}
 
 	public static void clearScreen() {
 		System.out.println("\033[H\033[2J");
