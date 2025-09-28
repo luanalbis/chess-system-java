@@ -14,23 +14,31 @@ public class UI {
 	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captureds) {
 		printBoard(chessMatch.getPieces());
 		System.out.println();
-		System.out.println("Turn: " + chessMatch.getTurn());
-		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
 		printCapturedPieces(captureds);
-		if(chessMatch.getCheck()) {
+		System.out.println();
+		System.out.println("Turn: " + chessMatch.getTurn());
+		
+		if (chessMatch.getCheckMate()) {
+			System.out.println("CHECKMATE!");
+			System.out.println("WINNER: " + chessMatch.getCurrentPlayer());
+			return;
+		}
+
+		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+		if (chessMatch.getCheck()) {
 			System.out.println("CHECK");
 		}
 	}
 
 	private static void printBoard(ChessPiece[][] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			System.out.print((8 - i) + " ");
+			System.out.print((8 - i) + "  ");
 			for (int j = 0; j < pieces.length; j++) {
 				printPiece(pieces[i][j]);
 			}
 			System.out.println();
 		}
-		System.out.println("  a b c d e f g h");
+		System.out.println("\n   a b c d e f g h");
 	}
 
 	private static void printPiece(ChessPiece piece) {
@@ -63,9 +71,9 @@ public class UI {
 		System.out.println();
 
 		System.out.print("Black: ");
-		blacks.forEach(p -> System.out.print(p.getName()  + " "));
+		blacks.forEach(p -> System.out.print(p.getName() + " "));
 		System.out.println();
-		}
+	}
 
 	public static void clearScreen() {
 		System.out.println("\033[H\033[2J");
