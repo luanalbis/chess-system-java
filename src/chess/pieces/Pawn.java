@@ -13,14 +13,6 @@ public class Pawn extends ChessPiece {
 
 	}
 
-	private boolean canMove(Position p) {
-		return getBoard().positionExists(p) && !getBoard().thereIsAPiece(p);
-	}
-
-	private boolean canCapture(Position p) {
-		return getBoard().positionExists(p) && isThereOponentPieces(p);
-	}
-
 	@Override
 	public boolean[][] possibleMoves() {
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
@@ -53,5 +45,10 @@ public class Pawn extends ChessPiece {
 		}
 
 		return mat;
+	}
+
+	@Override
+	protected int[][] possibleDirections() {
+		throw new UnsupportedOperationException("Pawn does not use possibleDirections()");
 	}
 }

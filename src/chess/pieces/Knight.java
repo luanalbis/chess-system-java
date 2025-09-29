@@ -1,4 +1,3 @@
-
 package chess.pieces;
 
 import boardgame.Board;
@@ -13,65 +12,26 @@ public class Knight extends ChessPiece {
 		super.name = 'N';
 	}
 
-	private boolean canMove(Position position) {
-		ChessPiece p = (ChessPiece) getBoard().getPieceByPosition(position);
-		return p == null || p.getColor() != getColor();
-	}
-
 	@Override
 	public boolean[][] possibleMoves() {
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
-		Position aux = new Position(0, 0);
 
-		// cima cida esquerda
-		aux.setValues(position.getRow() - 2, position.getColumn() - 1);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
+		int[][] directions = possibleDirections();
 
-		// cima esquerda esquerda
-		aux.setValues(position.getRow() - 1, position.getColumn() - 2);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
+		for (int[] dir : directions) {
+			Position aux = new Position(position.getRow() + dir[0], position.getColumn() + dir[1]);
 
-		// cima cima direita
-		aux.setValues(position.getRow() - 2, position.getColumn() + 1);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
-
-		// cima direita direita
-		aux.setValues(position.getRow() - 1, position.getColumn() + 2);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
-
-		// baixo baixo esquerda
-		aux.setValues(position.getRow() + 2, position.getColumn() - 1);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
-
-		// baixo esquerda esquerda
-		aux.setValues(position.getRow() + 1, position.getColumn() - 2);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
-
-		// baixo baixo direita
-		aux.setValues(position.getRow() + 2, position.getColumn() + 1);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
-		}
-
-		// baixo direita direita
-		aux.setValues(position.getRow() + 1, position.getColumn() + 2);
-		if (getBoard().positionExists(aux) && canMove(aux)) {
-			mat[aux.getRow()][aux.getColumn()] = true;
+			if (canMove(aux) || canCapture(aux)) {
+				mat[aux.getRow()][aux.getColumn()] = true;
+			}
 		}
 
 		return mat;
+	}
+
+	@Override
+	protected int[][] possibleDirections() {
+		return new int[][] { { -2, -1 }, { -2, 1 }, { -1, -2 }, { -1, 2 }, { 1, -2 }, { 1, 2 }, { 2, -1 }, { 2, 1 } };
 	}
 
 }

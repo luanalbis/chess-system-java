@@ -88,29 +88,61 @@ public class ChessMatch {
 
 	private Piece makeMove(Position source, Position target) {
 
-		ChessPiece p = (ChessPiece) board.removePieceOnBoard(source);
+		var p = (ChessPiece) board.removePiece(source);
 		p.incrementMoveCount();
 
-		Piece captured = board.removePieceOnBoard(target);
-		board.placePieceOnBoard(p, target);
+		Piece captured = board.removePiece(target);
+		board.placePiece(p, target);
 
 		if (captured != null) {
 			piecesOnBoard.remove(captured);
 			capturedPieces.add(captured);
 		}
 
+		if (p instanceof King && source.getColumn() + 2 == target.getColumn()) {
+			var sourceHook = new Position(source.getRow(), source.getColumn() + 3);
+			var targetHook = new Position(source.getRow(), source.getColumn() + 1);
+			var rook = (ChessPiece) board.removePiece(sourceHook);
+			board.placePiece(rook, targetHook);
+			rook.incrementMoveCount();
+		}
+
+		if (p instanceof King && source.getColumn() - 2 == target.getColumn()) {
+			var sourceHook = new Position(source.getRow(), source.getColumn() - 4);
+			var targetHook = new Position(source.getRow(), source.getColumn() - 1);
+			var rook = (ChessPiece) board.removePiece(sourceHook);
+			board.placePiece(rook, targetHook);
+			rook.incrementMoveCount();
+		}
+
 		return captured;
 	}
 
 	private void undoMove(Position source, Position target, Piece captured) {
-		ChessPiece piece = (ChessPiece) board.removePieceOnBoard(target);
-		piece.decrementMoveCount();
-		board.placePieceOnBoard(piece, source);
+		var p = (ChessPiece) board.removePiece(target);
+		p.decrementMoveCount();
+		board.placePiece(p, source);
 
 		if (captured != null) {
-			board.placePieceOnBoard(captured, target);
+			board.placePiece(captured, target);
 			capturedPieces.remove(captured);
 			piecesOnBoard.add(captured);
+		}
+
+		if (p instanceof King && source.getColumn() + 2 == target.getColumn()) {
+			var sourceHook = new Position(source.getRow(), source.getColumn() + 3);
+			var targetHook = new Position(source.getRow(), source.getColumn() + 1);
+			var rook = (ChessPiece) board.removePiece(targetHook);
+			board.placePiece(rook, sourceHook);
+			rook.decrementMoveCount();
+		}
+
+		if (p instanceof King && source.getColumn() - 2 == target.getColumn()) {
+			var sourceHook = new Position(source.getRow(), source.getColumn() - 4);
+			var targetHook = new Position(source.getRow(), source.getColumn() - 1);
+			var rook = (ChessPiece) board.removePiece(targetHook);
+			board.placePiece(rook, sourceHook);
+			rook.decrementMoveCount();
 		}
 
 	}
@@ -198,7 +230,7 @@ public class ChessMatch {
 	}
 
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
-		board.placePieceOnBoard(piece, new ChessPosition(column, row).toPosition());
+		board.placePiece(piece, new ChessPosition(column, row).toPosition());
 		piecesOnBoard.add(piece);
 	}
 
@@ -207,7 +239,7 @@ public class ChessMatch {
 		placeNewPiece('b', 1, new Knight(board, Color.WHITE));
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
 		placeNewPiece('d', 1, new Queen(board, Color.WHITE));
-		placeNewPiece('e', 1, new King(board, Color.WHITE));
+		placeNewPiece('e', 1, new King(board, Color.WHITE, this));
 		placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
 		placeNewPiece('g', 1, new Knight(board, Color.WHITE));
 		placeNewPiece('h', 1, new Rook(board, Color.WHITE));
@@ -220,7 +252,7 @@ public class ChessMatch {
 		placeNewPiece('b', 8, new Knight(board, Color.BLACK));
 		placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
 		placeNewPiece('d', 8, new Queen(board, Color.BLACK));
-		placeNewPiece('e', 8, new King(board, Color.BLACK));
+		placeNewPiece('e', 8, new King(board, Color.BLACK, this));
 		placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
 		placeNewPiece('g', 8, new Knight(board, Color.BLACK));
 		placeNewPiece('h', 8, new Rook(board, Color.BLACK));
