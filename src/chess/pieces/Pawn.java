@@ -7,17 +7,18 @@ import chess.Color;
 
 public class Pawn extends ChessPiece {
 
-	private boolean firstMove;
-
 	public Pawn(Board board, Color color) {
 		super(board, color);
 		super.name = 'P';
-		this.firstMove = true;
+
 	}
 
-	private boolean canMove(Position position) {
-		ChessPiece p = (ChessPiece) getBoard().getPieceByPosition(position);
-		return p == null || p.getColor() != getColor();
+	private boolean canMove(Position p) {
+		return getBoard().positionExists(p) && !getBoard().thereIsAPiece(p);
+	}
+
+	private boolean canCapture(Position p) {
+		return getBoard().positionExists(p) && isThereOponentPieces(p);
 	}
 
 	@Override
@@ -25,20 +26,30 @@ public class Pawn extends ChessPiece {
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
 		Position aux = new Position(0, 0);
 
-		int direction = (getColor() == Color.WHITE) ? -1 : 1;
+		int step = (getColor() == Color.WHITE) ? -1 : 1;
 
-		aux.setValues(position.getRow() + direction, position.getColumn());
-		if (getBoard().positionExists(aux) && canMove(aux)) {
+		// move
+		aux.setValues(position.getRow() + step, position.getColumn());
+		if (canMove(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+
+			if (getMoveCount() == 0) {
+				aux.setValues(position.getRow() + (step * 2), position.getColumn());
+				if (canMove(aux)) {
+					mat[aux.getRow()][aux.getColumn()] = true;
+				}
+			}
+		}
+
+		// fight
+		aux.setValues(position.getRow() + step, position.getColumn() - 1);
+		if (canCapture(aux)) {
 			mat[aux.getRow()][aux.getColumn()] = true;
 		}
 
-		if (firstMove) {
-			direction += direction;
-			aux.setValues(position.getRow() + direction, position.getColumn());
-			if (getBoard().positionExists(aux) && canMove(aux)) {
-				mat[aux.getRow()][aux.getColumn()] = true;
-			}
-			firstMove = false;
+		aux.setValues(position.getRow() + step, position.getColumn() + 1);
+		if (canCapture(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
 		}
 
 		return mat;
