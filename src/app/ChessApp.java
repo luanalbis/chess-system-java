@@ -32,7 +32,12 @@ public class ChessApp {
 				if (capturedPiece != null) {
 					captureds.add(capturedPiece);
 				}
-				
+
+				if (chessMatch.getPromoted() != null) {
+					System.out.println("Enter piece for promotion (B, N, R, Q)");
+					String typeString = sc.nextLine();
+					chessMatch.replacePromotedPiece(typeString.charAt(0));
+				}
 
 			} catch (ChessException e) {
 				System.out.println(e.getMessage());
@@ -43,7 +48,7 @@ public class ChessApp {
 			}
 
 		}
-		
+
 		UI.clearScreen();
 		UI.printMatch(chessMatch, captureds);
 

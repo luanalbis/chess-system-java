@@ -48,8 +48,8 @@ public class Pawn extends ChessPiece {
 		}
 
 		// specialmove en passant
-		int enPassantCheckRow = getColor() == Color.WHITE ? 3 : 4;
-		if (position.getRow() == enPassantCheckRow) {
+
+		if (position.getRow() == (getColor() == Color.WHITE ? 3 : 4)) {
 			var left = new Position(position.getRow(), position.getColumn() - 1);
 			var right = new Position(position.getRow(), position.getColumn() + 1);
 			if (canEnPassant(left)) {
